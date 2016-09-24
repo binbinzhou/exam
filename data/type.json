@@ -1,0 +1,13 @@
+[{
+	"id":1,
+	"name":"radio",
+	"relname":"单选题"
+},{
+	"id":2,
+	"name":"checkbox",
+	"relname":"多选题"
+},{
+	"id":3,
+	"name":"chapter",
+	"relname":"问答题"
+}]

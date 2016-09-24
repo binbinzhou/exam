@@ -1,0 +1,184 @@
+<style>
+    .Attributecontent_left select{width:100px}
+    textarea,input{font-size:12px;}
+    .Answerpart_right textarea,.Problemcontent textarea{width:90%;height:70%;border:none;padding:10px;}
+    /*.chapterAnswer{ display:none}*/
+</style>
+<!--题目添加-->
+<div class="editingarea">
+
+    <div class="c_flex"><span class="c_flexible"></span></div>
+    <div class="chosetitle">添加题目<a href="#" class="deletetitle">删除</a></div>
+
+    <div class="c_editview">
+        <div class="Attribute">
+            <div class="Attributetit">题目属性</div>
+            <div class="Attributecontent">
+                <div class="Attributecontent_left">
+                    <b>
+                        题型：<select name="type" ng-model="subject.subjectType.id">
+                        <!--做一个三目运算，当为isradio的时候显示isradio当为checkbox的时候显示checkbox
+                        也可用ng-switch
+                        -->
+                        <option value="{{type.id}}"  ng-repeat="type in types">{{type.relname}}</option>
+
+                    </select>
+                    </b>
+                    <b>
+                        方向：<select name="department" ng-model="subject.department.id">
+                        <option value="{{department.id}}"  ng-repeat="department in departments">{{department.relname}}</option>
+
+                    </select>
+                    </b>
+                    <b>
+                        难度：<select name="level" ng-model="subject.subjectLevel.id">
+                        <option value="{{level.id}}"  ng-repeat="level in levels">{{level.relname}}</option>
+
+                    </select>
+                    </b>
+                    <b>
+                        知识点：<select name="topics" ng-model="subject.topic.id">
+                        <option value="{{topic.id}}"  ng-repeat="topic in topics">{{topic.title}}</option>
+
+                    </select>
+                    </b>
+
+                    <!--
+                    <div class="Attributecontent_right">
+                        <a href="#" class="addAttr">添加</a>
+                       <a href="#" class="leftmove">左移</a>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div>
+        <div class="Problem">
+            <div class="Attributetit">题目题干</div>
+            <div>
+                <textarea name="stem" cols="80" rows="4" ng-model="subject.stem"></textarea>
+            </div>
+        </div>
+        <div class="Answeroptions">
+            <div class="Attributetit">答案选项<em>(通过勾选每个选项下面的框可以设置正确答案)</em></div>
+            <div class="c_condition"><span class="icon_add">
+                            	<em class="icon_r" style="float: left">添加选项</em></span>
+            </div>
+            <!--单选选项-->
+            <div class="Answercontent">
+                <div class="Answerpart">
+                    <div class="Answerpart_left">
+                        <p>A</p><span>
+                                         <input type="radio" name="answer"/></span>
+                    </div>
+                    <div class="Answerpart_right">
+                        <textarea name="content"></textarea>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="Answerpart">
+                    <div class="Answerpart_left">
+                        <p>B</p><span>
+                                        <input type="radio" name="answer"/>
+                                        </span>
+                    </div>
+                    <div class="Answerpart_right">
+                        <textarea name="content"></textarea>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="Answerpart">
+                    <div class="Answerpart_left">
+                        <p>C</p><span>
+                                        <input type="radio" name="answer"/>
+                                        </span>
+                    </div>
+                    <div class="Answerpart_right">
+                        <textarea name="content"></textarea>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="Answerpart">
+                    <div class="Answerpart_left">
+                        <p>D</p><span>
+                                        <input type="radio" name="answer"/>
+                                        </span>
+                    </div>
+                    <div class="Answerpart_right">
+                        <textarea name="content"></textarea>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!--多选选项-->
+            <div class="Answercontent">
+                <div class="Answerpart">
+                    <div class="Answerpart_left">
+                        <p>A</p><span>
+                                         <input type="checkbox" name="answer"/></span>
+                    </div>
+                    <div class="Answerpart_right">
+                        <textarea name="content"></textarea>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="Answerpart">
+                    <div class="Answerpart_left">
+                        <p>B</p><span>
+                                        <input type="checkbox" name="answer"/>
+                                        </span>
+                    </div>
+                    <div class="Answerpart_right">
+                        <textarea name="content"></textarea>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="Answerpart">
+                    <div class="Answerpart_left">
+                        <p>C</p><span>
+                                        <input type="checkbox" name="answer"/>
+                                        </span>
+                    </div>
+                    <div class="Answerpart_right">
+                        <textarea name="content"></textarea>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="Answerpart">
+                    <div class="Answerpart_left">
+                        <p>D</p><span>
+                                        <input type="checkbox" name="answer"/>
+                                        </span>
+                    </div>
+                    <div class="Answerpart_right">
+                        <textarea name="content"></textarea>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="Problem chapterAnswer">
+            <div class="Attributetit">答案</div>
+            <div class="Problemcontent">
+                <textarea name="answer"></textarea>
+            </div>
+        </div>
+
+        <div class="Problem">
+            <div class="Attributetit">答案解析</div>
+            <div class="Problemcontent">
+                <textarea name="analysis"></textarea>
+            </div>
+        </div>
+        <!--
+        <div class="Problem">
+            <div class="fistproblm"><span>1.</span><a href="#"></a></div>
+            <div class="Problemcontent"></div>
+        </div>
+        -->
+        <div class="btn_left">
+            <span class="btnL"><em class="btnR" ng-click="saveSubject()">保存并继续</em></span><span class="btnL"><em class="btnR">保存并关闭</em></span>
+        </div>
+    </div>
+</div>
