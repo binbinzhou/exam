@@ -14,6 +14,16 @@ $(function () {
     $(".baseUI>li>a").eq(0).trigger("click");
     $(".baseUI>li>ul>li>a").eq(0).trigger("click");
 
+    //给最里面的li绑定事件
+    $(".baseUI>li>ul>li").off("click");
+    $(".baseUI>li>ul>li").on("click",function () {
+        if(!$(this).hasClass("current")){
+            $(this).addClass("current").siblings().removeClass("current");
+        }
+    });
+
+
+
 });
 
 
@@ -24,12 +34,22 @@ angular.module("app",["ng","ngRoute","app.subject"])      //ng???
         
     }])
     //路由配置
+    /*
+    * a     题型id
+    * b     方向id
+    * c     知识点id
+    * d     难度id
+    *
+    * */
     .config(["$routeProvider",function ($routeProvider) {
-        $routeProvider.when("/AllSubject",{
+        $routeProvider.when("/AllSubject/a/:a/b/:b/c/:c/d/:d",{
             templateUrl:"tpl/subject/subjectList.html",
             controller:"subjectController"
         }).when("/SubjectManager",{
             templateUrl:"tpl/subject/subjectManager.html",
+            controller:"subjectController"
+        }).when("/subjectAdd",{
+            templateUrl:"tpl/subject/subjectAdd.html",
             controller:"subjectController"
         });
     }]);

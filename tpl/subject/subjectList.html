@@ -6,6 +6,7 @@
         margin-left: 20px;
     }
 </style>
+{{params}}
 <div class="editingarea">
     <div class="c_flex"><span class="c_flexible"></span></div>
     <div class="c_editview">
@@ -13,19 +14,21 @@
             <span><select><option>题干</option></select></span>
             <span class="pl5 " ><input type="text"></span>
             <span class="pl15 pr15 btn_gray ">查找</span>
-            <span class="icon_lead-in"><em class="icon_r">批量导入题目</em></span>
             <span class="icon_add"><em class="icon_r" ng-click="add()">单个添加题目</em></span>
         </div>
         <div class="divtable">
-            <subject-dt>
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tablea">
                 <tr>
                     <td align="center" style="width: 50px;">题型</td>
                     <td align="left">
                         <div class="chose">
-                            <a href="javascript:void(0);" class="active3">全部</a>
-                            <a href="javascript:void(0);" class="" ng-repeat="type in types">{{type.relname}}</a>
-
+                            <a href="#/AllSubject/a/0/b/{{params.b}}/c/{{params.c}}/d/{{params.d}}"
+                               class="{{params.a == 0?'active3':'' }}">全部</a>
+                            <a href="#/AllSubject/a/{{type.id}}/b/{{params.b}}/c/{{params.c}}/d/{{params.d}}"
+                               class="{{params.a == type.id?'active3':'' }}"
+                               ng-repeat="type in types">
+                                {{type.realName}}
+                            </a>
                         </div>
                     </td>
 
@@ -34,9 +37,13 @@
                     <td align="center">方向</td>
                     <td align="left">
                         <div class="chose">
-                            <a href="javascript:void(0);" class="active3">全部</a>
-                            <a href="javascript:void(0);" class="" ng-repeat="department in departments">{{department.relname}}</a>
-
+                            <a href="#/AllSubject/a/{{params.a}}/b/0/c/{{params.c}}/d/{{params.d}}"
+                               class="{{params.b == 0?'active3':'' }}">全部</a>
+                            <a href="#/AllSubject/a/{{params.a}}/b/{{department.id}}/c/{{params.c}}/d/{{params.d}}"
+                               class="{{params.b == department.id?'active3':'' }}"
+                               ng-repeat="department in departments">
+                                {{department.name}}
+                            </a>
                         </div>
                     </td>
                 </tr>
@@ -44,8 +51,13 @@
                     <td align="center">知识点</td>
                     <td align="left">
                         <div class="chose">
-                            <a href="javascript:void(0);" class="active3">全部</a>
-                            <a href="javascript:void(0);" class="" ng-repeat="topic in topics">{{topic.title}}</a>
+                            <a href="#/AllSubject/a/{{params.a}}/b/{{params.b}}/c/0/d/{{params.d}}"
+                               class="{{params.c == 0?'active3':'' }}">全部</a>
+                            <a href="#/AllSubject/a/{{params.a}}/b/{{params.b}}/c/{{topic.id}}/d/{{params.d}}"
+                               class="{{params.c == topic.id?'active3':'' }}"
+                               ng-repeat="topic in topics">
+                                {{topic.title}}
+                            </a>
                         </div>
                     </td>
                 </tr>
@@ -53,14 +65,18 @@
                     <td align="center">难度</td>
                     <td align="left">
                         <div class="chose">
-                            <a href="javascript:void(0);" class="active3">全部</a>
-                            <a href="javascript:void(0);" class="" ng-repeat="level in levels">{{level.relname}}</a>
+                            <a href="#/AllSubject/a/{{params.a}}/b/{{params.b}}/c/{{params.d}}/d/0"
+                               class="{{params.d == 0?'active3':'' }}">全部</a>
+                            <a href="#/AllSubject/a/{{params.a}}/b/{{params.b}}/c/{{params.c}}/d/{{level.id}}"
+                               class="{{params.d == level.id?'active3':'' }}"
+                               ng-repeat="level in levels">
+                                {{level.realName}}
+                            </a>
                         </div>
                     </td>
-
                 </tr>
             </table>
-            </subject-dt></div>
+        </div>
         <div class="Catalog">
 
             <div class="Catalog_right">
@@ -68,7 +84,6 @@
                     总计<em>15552</em>
                     道题&nbsp;&nbsp;提示：单击可显示答案和解析&nbsp;&nbsp;
                     <input type="checkbox" ng-model="isShow" /><b>显示答案和解析</b>&nbsp;&nbsp;
-                    <a href="#" class="Thispage">本页全部试题加入试卷</a>
                     <div><i>1</i><a href="#" class="pageone">前</a><a href="#" class="pagetwo">后</a></div></div>
                 <div class="Catalog_rightnei" ng-repeat="subject in subjects">
                     <div class="Catalogtitwo">
@@ -104,7 +119,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="clear"></div>
         </div>

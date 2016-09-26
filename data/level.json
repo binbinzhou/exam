@@ -1,15 +1,15 @@
 [{
 	"id":1,
 	"name":"easy",
-	"relname":"容易"
+	"realName":"容易"
 },
 {
 	"id":2,
 	"name":"medium",
-	"relname":"中等"
+	"realName":"中等"
 },
 {
 	"id":3,
 	"name":"difficult",
-	"relname":"难"
+	"realName":"难"
 }]
