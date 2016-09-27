@@ -32,6 +32,7 @@
                     <b>
                         知识点：<select ng-model="subject.topicId"
                                     ng-options="topic.id as topic.title for topic in topics | selectTopic :subject.departmentId">
+                        <!--根据当前的方向Id来过滤-->
                     </select>
                     </b>
 

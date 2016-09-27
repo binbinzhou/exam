@@ -34,7 +34,7 @@ angular.module("app.subject",["ng","ngRoute"])
             $scope.params = $routeParams;
             //添加题目页面下拉框信息数据
             $scope.subject = {
-                typeId :3,
+                typeId :1,
                 levelId:1,
                 departmentId:1,
                 topicId:1,
@@ -60,8 +60,10 @@ angular.module("app.subject",["ng","ngRoute"])
                     choiceContent:[],
                     choiceCorrect:[false,false,false,false]
                 };
+                //保存并继续，页面原有内容重置，这里使用的是将原有的内容再重新设置一遍，利用到一个angular方法copy(),
+                // 将原先的值重新定义一次，再绑定在$scope.subject上
                 //重置作用域中绑定的表单默认值
-                angular.copy(subject,$scope.subject);
+                angular.copy(subject,$scope.subject);   //将重新定义的subject拷贝到$scope.subject上
             };
 
             //保存并关闭
@@ -69,7 +71,7 @@ angular.module("app.subject",["ng","ngRoute"])
                 SubjectsAllService.saveSubject($scope.subject,function (data) {
                     alert(data);
                 });
-                //保存并关闭，
+                //保存并关闭，利用路由机制，手动设置一个path，让其跳转到subjectList页面
                 $location.path("/AllSubject/a/0/b/0/c/0/d/0");
             };
 
@@ -123,7 +125,7 @@ angular.module("app.subject",["ng","ngRoute"])
     //获取全部题目的信息，创建一个新的服务，方便之后的增删该查，
     .service("SubjectsAllService",["$http","$httpParamSerializer",function ($http,$httpParamSerializer) {
         //删除题目
-        this.delSubject = function( id,handler){
+        this.delSubject = function(id,handler){
           $http.get("http://172.16.0.5:7777/test/exam/manager/delSubject.action",{
               params:{
                   "subject.id":id
@@ -180,9 +182,10 @@ angular.module("app.subject",["ng","ngRoute"])
                 }
             }
             console.log(obj);
-            //对obj对象进行表单格式的序列化，(默认使用json格式)
+            //对obj对象进行表单格式的序列化操作，(默认使用json格式)，需在函数内部注入$httpParamSerializer
             obj = $httpParamSerializer(obj);
             $http.post("http://172.16.0.5:7777/test/exam/manager/saveSubject.action",obj,{
+                //当使用post提交的时候必须设置请求头为表单提交时的Content-Type，对obj进行编码
                 headers:{
                     "Content-Type":"application/x-www-form-urlencoded"
                 }
@@ -261,15 +264,16 @@ angular.module("app.subject",["ng","ngRoute"])
             }
         };
     }])
+    //根据方向id获取知识点
     .filter("selectTopic",function () {
-        //input要过滤的内容，方向id
+        //input为要过滤的内容、当前方向id，
         return function (input,id) {
-            //数组中filter过滤方法
             if(input){
+                //数组中filter过滤方法(当回调函数返回true的时候把当前正在遍历的元素添加进即将返回的数组中)
                 var result = input.filter(function (item) {
                     return item.department.id == id;
                 });
-                //将过滤后的返回
+                //将过滤后的结果返回
                 return result;
             }
         }
@@ -277,6 +281,7 @@ angular.module("app.subject",["ng","ngRoute"])
     .directive("selectOption",function () {
         return {
             restrict:"A",
+            //简写方式，直接写link,要么就按格式写齐，要么就直接写link,操作dom的函数
             link:function (scope,element) {
                 element.on("change",function () {
                     var type = $(this).attr("type");
@@ -306,7 +311,7 @@ angular.module("app.subject",["ng","ngRoute"])
                         }
                     }
                     //强制消化
-                    scope.$digest();
+                    scope.$digest();    //让修改的值映射到作用域绑定的scope.subject中
                 })
             }
         }
