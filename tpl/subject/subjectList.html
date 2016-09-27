@@ -13,8 +13,11 @@
         <div class="c_condition">
             <span><select><option>题干</option></select></span>
             <span class="pl5 " ><input type="text"></span>
-            <span class="pl15 pr15 btn_gray ">查找</span>
-            <span class="icon_add"><em class="icon_r" ng-click="add()">单个添加题目</em></span>
+            <span class="icon_add">
+                <em class="icon_r">
+                    <a href="#/SubjectAdd">单个添加题目</a>
+                </em>
+            </span>
         </div>
         <div class="divtable">
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tablea">
@@ -90,6 +93,7 @@
                         <b>题号：</b>{{subject.id}}&nbsp;&nbsp;
                         <b>题型：</b>{{subject.subjectType.realName}}&nbsp;&nbsp;
                         <b>难度：</b>{{subject.subjectLevel.realName}}&nbsp;&nbsp;
+                        <b>审核状态：</b><span style="color:red">{{subject.checkState}}</span>&nbsp;&nbsp;
                         <b>上传人：</b>{{subject.user}}&nbsp;&nbsp;
                         <b>上传时间：</b>{{subject.uploadTime}}&nbsp;&nbsp;
                         </div>
@@ -108,14 +112,15 @@
                             <div ng-show="isShow">
                                 <b>正确答案：</b>
                                 {{subject.answer}}<br>
+                                <b>解析：</b>
                                 {{subject.analysis}}
                             </div>
                         </div>
                         <div class="Catalogcontentdown">
-                            <a href="#">审核通过</a>
+                            <a href="#/SubjectAud/id/{{subject.id}}/checkState/'通过'">审核通过</a>
                             <a href="#">加入试卷</a>
                             <a href="#">审核不通过</a>
-                            <a href="#">删除题目</a>
+                            <a href="#/SubjectDel/id/{{subject.id}}">删除题目</a>
                         </div>
                     </div>
                 </div>
