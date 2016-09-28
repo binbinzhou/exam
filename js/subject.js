@@ -2,13 +2,14 @@
  * Created by zhoubinbin on 2016/9/22.
  * 题目管理的js模块
  */
-angular.module("app.subject",["ng","ngRoute"])
-    .controller("subjectDelController",["SubjectsAllService","$routeParams","$location",
-        function (SubjectsAllService,$routeParams,$location) {
+angular.module("app.subject",["ng"])
+    //删除题目的控制器
+    .controller("subjectDelController",["subjectService","$routeParams","$location",
+        function (subjectService,$routeParams,$location) {
             var flag = confirm("确认删除吗？");
             if(flag){
                 var id = $routeParams.id;
-                SubjectsAllService.delSubject(id,function (data) {
+                subjectService.delSubject(id,function (data) {
                     alert(data);
                     //删除成功后页面跳转回题目列表页
                     $location.path("/AllSubject/a/0/b/0/c/0/d/0");
@@ -18,18 +19,19 @@ angular.module("app.subject",["ng","ngRoute"])
             }
 
     }])
-    .controller("subjectAudController",["SubjectsAllService","$routeParams","$location",
-        function (SubjectsAllService,$routeParams,$location) {
+    //审核题目的控制器
+    .controller("subjectCheckController",["subjectService","$routeParams","$location",
+        function (subjectService,$routeParams,$location) {
                 var id = $routeParams.id;
-                var checkState = $routeParams.checkState;
-            console.log(checkState);
-                SubjectsAllService.audSubject(id,checkState,function (data) {
+                var state = $routeParams.state;
+                //console.log(state);
+                subjectService.checkSubject(id,state,function (data) {
                     alert(data);
                     $location.path("/AllSubject/a/0/b/0/c/0/d/0");
                 });
     }])
-    .controller("subjectController",["$scope","SubjectService","SubjectsAllService","$routeParams","$location",
-        function ($scope,SubjectService,SubjectsAllService,$routeParams,$location) {
+    .controller("subjectController",["$scope","commonService","subjectService","$routeParams","$location",
+        function ($scope,commonService,subjectService,$routeParams,$location) {
         //将路由参数绑定到作用域当中
             $scope.params = $routeParams;
             //添加题目页面下拉框信息数据
@@ -46,7 +48,7 @@ angular.module("app.subject",["ng","ngRoute"])
             };
             //保存并继续
             $scope.submit = function () {
-                SubjectsAllService.saveSubject($scope.subject,function (data) {
+                subjectService.saveSubject($scope.subject,function (data) {
                    alert(data);     //数据库中的提示消息
                 });
                 var subject = {
@@ -68,7 +70,7 @@ angular.module("app.subject",["ng","ngRoute"])
 
             //保存并关闭
             $scope.submitAndClose = function () {
-                SubjectsAllService.saveSubject($scope.subject,function (data) {
+                subjectService.saveSubject($scope.subject,function (data) {
                     alert(data);
                 });
                 //保存并关闭，利用路由机制，手动设置一个path，让其跳转到subjectList页面
@@ -76,23 +78,23 @@ angular.module("app.subject",["ng","ngRoute"])
             };
 
             //调用获取类型函数
-            SubjectService.getSubjecttypes(function (data) {
+            commonService.getSubjecttypes(function (data) {
                 $scope.types = data;
             });
             //调用获取方向函数
-            SubjectService.getSubjectdepartments(function (data) {
+            commonService.getSubjectdepartments(function (data) {
                 $scope.departments = data;
             });
             //调用获取知识点函数
-            SubjectService.getSubjecttopics(function (data) {
+            commonService.getSubjecttopics(function (data) {
                 $scope.topics = data;
             });
             //调用获取难度函数
-            SubjectService.getSubjectlevel(function (data) {
+            commonService.getSubjectlevel(function (data) {
                 $scope.levels = data;
             });
             //调用所有题目信息
-            SubjectsAllService.getAllSubject($routeParams,function (data) {
+            subjectService.getAllSubject($routeParams,function (data) {
                 //对每个题目进行遍历
                 data.forEach(function (subject) {
                     //为每个选项添加ABCD编号
@@ -102,7 +104,7 @@ angular.module("app.subject",["ng","ngRoute"])
                             var answer = [];
                             subject.choices.forEach(function (choice,index) {
                                 //给选项组数里面的每一个选项设置一个属性no，调用一个方法将索引值转换为对应的ABCD
-                                choice.no = SubjectService.convertIndexToNo(index);
+                                choice.no = commonService.convertIndexToNo(index);
                             });
                             //如果题目类型id不为3，也就是为单选或者多选的时候
                             if(subject.subjectType.id != 3){
@@ -123,7 +125,7 @@ angular.module("app.subject",["ng","ngRoute"])
             });
     }])
     //获取全部题目的信息，创建一个新的服务，方便之后的增删该查，
-    .service("SubjectsAllService",["$http","$httpParamSerializer",function ($http,$httpParamSerializer) {
+    .service("subjectService",["$http","$httpParamSerializer",function ($http,$httpParamSerializer) {
         //删除题目
         this.delSubject = function(id,handler){
           $http.get("http://172.16.0.5:7777/test/exam/manager/delSubject.action",{
@@ -135,11 +137,11 @@ angular.module("app.subject",["ng","ngRoute"])
           })
         };
         //审核题目
-        this.audSubject = function (id,checkState,handler) {
+        this.checkSubject = function (id,state,handler) {
             $http.get("http://172.16.0.5:7777/test/exam/manager/checkSubject.action",{
                 params:{
                     "subject.id":id,
-                    "subject.checkState":"通过"
+                    "subject.checkState":state
                 }
             }).success(function (data) {
                 handler(data);
@@ -229,7 +231,8 @@ angular.module("app.subject",["ng","ngRoute"])
         };
         
     }])
-    .factory("SubjectService",["$http",function ($http) {
+    //公共的服务，获取题目类型，方向，难度，知识点
+    .factory("commonService",["$http",function ($http) {
         return {
             convertIndexToNo:function (index) {
                 return index ==0 ?"A":(index ==1?"B":(index == 2?"C":(index ==3?"D":"E" )));

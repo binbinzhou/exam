@@ -13,11 +13,6 @@
         <div class="c_condition">
             <span><select><option>题干</option></select></span>
             <span class="pl5 " ><input type="text"></span>
-            <span class="icon_add">
-                <em class="icon_r">
-                    <a href="#/SubjectAdd">单个添加题目</a>
-                </em>
-            </span>
         </div>
         <div class="divtable">
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tablea">
@@ -117,9 +112,7 @@
                             </div>
                         </div>
                         <div class="Catalogcontentdown">
-                            <a href="#/SubjectState/id/{{subject.id}}/state/通过">审核通过</a>
-                            <a href="#/SubjectState/id/{{subject.id}}/state/不通过">审核不通过</a>
-                            <a href="#/SubjectDel/id/{{subject.id}}">删除题目</a>
+                            <a href="#/PaperAdd/id/{{subject.id}}/stem/{{subject.stem}}/type/{{subject.subjectType.realName}}/topic/{{subject.topic.title}}/level/{{subject.subjectLevel.realName}}">加入试卷</a>
                         </div>
                     </div>
                 </div>
